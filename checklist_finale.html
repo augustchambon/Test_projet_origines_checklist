@@ -30,7 +30,7 @@
             width: 100%;
             margin: 0;
             border: 3px dashed #FFF3D8;
-            padding: 25px 30px;
+            padding: 25px 30px 15px 30px;
             border-radius: 10px;
             background-color: #1F2E44;
         }
@@ -45,11 +45,15 @@
         .checklist-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             padding: 10px;
             border-radius: 8px;
             transition: transform 0.2s, background-color 0.2s;
+        }
+        
+        .checklist-item:last-child {
+            margin-bottom: 0;
         }
         
         .checklist-item:hover {

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Est-ce que je suis prêt·e ?</title>
+    
+    <!-- POLICE : Modifiable ici - Actuellement Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            /* POLICE : Changez 'Poppins' ci-dessous pour modifier la police */
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent;
+            color: white;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        
+        .checklist-container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0;
+            border: 3px dashed #FFF3D8;
+            padding: 25px 30px;
+            border-radius: 10px;
+            background-color: #1F2E44;
+        }
+        
+        h1 {
+            font-size: 1.75em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        
+        .checklist-item:hover {
+            background-color: rgba(255, 243, 216, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border: 3px solid #D86650;
+            border-radius: 6px;
+            margin-right: 15px;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox.checked {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .checkbox.checked::after {
+            content: "✓";
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            animation: checkmark 0.3s ease;
+        }
+        
+        @keyframes checkmark {
+            0% {
+                transform: scale(0) rotate(45deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(-10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        .item-text {
+            font-size: 1.1em;
+            line-height: 1.5;
+            flex: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .checklist-container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .item-text {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checklist-container">
+        <h1>Est-ce que je suis prêt·e ?</h1>
+        
+        <div class="checklist-item" data-index="0">
+            <div class="checkbox"></div>
+            <div class="item-text">Je sais qui je vais interroger ou découvrir (ou j'ai une idée).</div>
+        </div>
+        
+        <div class="checklist-item" data-index="1">
+            <div class="checkbox"></div>
+            <div class="item-text">J'ai écrit mon intention personnelle.</div>
+        </div>
+        
+        <div class="checklist-item" data-index="2">
+            <div class="checkbox"></div>
+            <div class="item-text">Je comprends que ce projet parle de mémoire, d'écoute et de transmission.</div>
+        </div>
+        
+        <div class="checklist-item" data-index="3">
+            <div class="checkbox"></div>
+            <div class="item-text">Je suis curieux·se et prêt·e à m'impliquer vraiment.</div>
+        </div>
+        
+        <div class="checklist-item" data-index="4">
+            <div class="checkbox"></div>
+            <div class="item-text">Je sais que ce n'est pas un devoir scolaire, c'est un projet qui me concerne.</div>
+        </div>
+        
+        <div class="checklist-item" data-index="5">
+            <div class="checkbox"></div>
+            <div class="item-text">J'ai vu la vidéo de bienvenue (ou je peux la revoir si besoin).</div>
+        </div>
+        
+        <div class="checklist-item" data-index="6">
+            <div class="checkbox"></div>
+            <div class="item-text">J'ai un carnet, une feuille ou un endroit pour prendre des notes si je veux.</div>
+        </div>
+        
+        <div class="checklist-item" data-index="7">
+            <div class="checkbox"></div>
+            <div class="item-text">Je suis dans un endroit calme (ou j'ai trouvé un moment tranquille pour commencer).</div>
+        </div>
+    </div>
+    
+    <script>
+        // État de la checklist
+        const checklistStates = [false, false, false, false, false, false, false, false];
+        
+        // Créer le son de clic
+        function playCheckSound(isChecked) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Son différent selon coché/décoché
+                oscillator.frequency.value = isChecked ? 800 : 600;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch(e) {
+                // Navigateur ne supporte pas Web Audio API
+            }
+        }
+        
+        // Gérer les clics
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const checkbox = this.querySelector('.checkbox');
+                const index = this.dataset.index;
+                
+                // Toggle la checkbox
+                const willBeChecked = !checkbox.classList.contains('checked');
+                checkbox.classList.toggle('checked');
+                
+                // Mettre à jour l'état
+                checklistStates[index] = willBeChecked;
+                
+                // Jouer le son
+                playCheckSound(willBeChecked);
+            });
+        });
+    </script>
+</body>
+</html>
